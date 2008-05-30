@@ -115,10 +115,10 @@ class Template
 	function show($name, $smarty = false)
 	{
 		if ($smarty) {
-			$path = site_path . 'templates' . DIRSEP . $name . '.tpl';
+			$path = site_path . 'v' . DIRSEP . $name . '.tpl';
 			$smarty = $this->registry->smarty;
 		} else {
-			$path = site_path . 'templates' . DIRSEP . $name . '.php';
+			$path = site_path . 'v' . DIRSEP . $name . '.php';
 		}
 
 		if (file_exists($path) == false) {

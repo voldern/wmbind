@@ -93,7 +93,7 @@ class Router
 		if ($controller->models != NULL && is_array($controller->models))
 		{
 			foreach ($controller->models as $model)	{
-				$modelFile = site_path . 'models' . DIRSEP . strtolower($model) . '.php';
+				$modelFile = site_path . 'm' . DIRSEP . strtolower($model) . '.php';
 				if (file_exists($modelFile) == false)
 					die ('404 Model not found');
 
@@ -113,10 +113,10 @@ class Router
 		// Then autoloads the view if it exists
 		require 'head.php';
 
-		if (file_exists(site_path . 'templates' . DIRSEP . $testController . DIRSEP . $action . '.tpl')) {
+		if (file_exists(site_path . 'v' . DIRSEP . $testController . DIRSEP . $action . '.tpl')) {
 			$template = $this->registry->template;
 			$template->show($testController . DIRSEP . $action, true);
-		} elseif (file_exists(site_path . 'templates' . DIRSEP . $testController . DIRSEP . $action . '.php')) {
+		} elseif (file_exists(site_path . 'v' . DIRSEP . $testController . DIRSEP . $action . '.php')) {
 			$template = $this->registry->template;
 			$template->show($testController . DIRSEP . $action);
 		}
