@@ -36,10 +36,10 @@ $registry->template->overwrite = true;
  *  Load smarty object
  */
 $smarty = new Smarty();
-$smarty->template_dir = site_path . 'templates';
-$smarty->compile_dir = site_path . 'templates' . DIRSEP . 'smarty' . DIRSEP . 'compile';
-$smarty->cache_dir = site_path . 'templates' . DIRSEP . 'smarty' . DIRSEP . 'cache';
-$smarty->config_dir = site_path . 'templates' . DIRSEP . 'smarty' . DIRSEP . 'configs';
+$smarty->template_dir = site_path . 'v';
+$smarty->compile_dir = site_path . 'v' . DIRSEP . 'smarty' . DIRSEP . 'compile';
+$smarty->cache_dir = site_path . 'v' . DIRSEP . 'smarty' . DIRSEP . 'cache';
+$smarty->config_dir = site_path . 'v' . DIRSEP . 'smarty' . DIRSEP . 'configs';
 $registry->smarty = $smarty;
 
 /**
@@ -47,7 +47,7 @@ $registry->smarty = $smarty;
  */
 $router = new Router($registry);
 $registry->router = $router;
-$router->setPath(site_path . 'controllers');
+$router->setPath(site_path . 'c');
 
 
 /**

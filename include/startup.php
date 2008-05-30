@@ -45,7 +45,7 @@ define('site_addr', $siteAddr);
 function __autoload($className)
 {
 	$filename = strtolower($className) . '.php';
-	$file = site_path . 'classes' . DIRSEP . $filename;
+	$file = site_path . 'framework' . DIRSEP . $filename;
 
 	if (file_exists($file) == false) {
 		return false;
