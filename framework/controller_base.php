@@ -106,6 +106,8 @@ abstract class Controller_Base
 			header('Location: ' . site_addr);
 		else
 			header('Location: ' . site_addr . $path);		
+		
+		exit();
 	}
 }
 
