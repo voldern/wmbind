@@ -1,6 +1,6 @@
 <?php
 /**
- * @package MVC  
+ * @package WMBIND 
  */
 
 //error_reporting(E_ALL);

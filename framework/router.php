@@ -1,14 +1,14 @@
 <?php
 
 /**
- * @package MVC
+ * @package WMBIND 
  */
 
 /**
  * Router 
  * 
  * @author Espen Volden <voldern@hoeggen.net> 
- * @package MVC
+ * @package WMBIND 
  */
 class Router
 {

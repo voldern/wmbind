@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package MVC
+ * @package WMBIND 
  */
 
 
@@ -9,7 +9,7 @@
  * Model_Base 
  * 
  * @abstract
- * @package MVC 
+ * @package WMBIND
  * @author Espen Volden <voldern@hoeggen.net> 
  */
 abstract class Model_Base

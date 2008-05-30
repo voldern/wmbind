@@ -7,7 +7,7 @@
  *
  * @uses ArrayAccess
  * @author Espen Volden <voldern@hoeggen.net> 
- * @package MVC
+ * @package WMBIND 
  */
 class Registry
 {
