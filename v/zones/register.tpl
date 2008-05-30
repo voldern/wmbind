@@ -20,5 +20,5 @@
 <label for="mail">Mail Server IP:</label> <input type="text" name="mail" id="mail" value="{$smarty.post.mail}" value="" /> <br />
 <label>Owner:</label> {html_options name=owner options=$users} <br />
 
-<input type="submit" value="Add zone" />
+<input type="submit" id="submit" value="Add zone" />
 </form>
