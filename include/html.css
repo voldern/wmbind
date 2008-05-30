@@ -76,3 +76,11 @@ a {
 a:hover {text-decoration: underline;}
 .green	{color: #AACC55;}
 .blue	{color: #55AACC;}
+
+label {
+	float: left;
+	text-align: right;
+	margin-right: 10px;
+	width: 150px;
+	font-weight: bold;
+}
