@@ -18,7 +18,7 @@ class Controller_Users extends Controller_Base
 				// Trying to save the user to the database
 				if ($this->User->save(array('username' => $_POST['username'], 'password' => $this->User->hash($_POST['password']),
 					'admin' => $_POST['admin']))) {
-					$this->template->error .= "SAVED";	
+					$this->redirect('/users/');
 				}
 			} else {
 			}
