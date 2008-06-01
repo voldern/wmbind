@@ -54,6 +54,25 @@ class Controller_Users extends Controller_Base
 			$this->redirect('/users/');
 		}	
 	}
+
+	function delete($args)
+	{
+		if (!is_numeric($args[0]))
+			$this->redirect('/users/');
+
+		if (isset($args[1]) && $args[1] == 'yes') {
+			if ($this->User->delete($args[0]))
+				$this->User->query('UPDATE `zones` SET `owner` = 1 WHERE `owner` = ?', array($args[0]));
+
+			$this->redirect('/users/');
+		} else {
+			$this->template->user = $this->User->find($args[0], NULL, array('id', 'username'));
+			
+			// Redirect back if no zone where found
+			if (empty($this->template->user))
+				$this->redirect('/users/');
+		}
+	}
 }
 
 ?>

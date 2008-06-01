@@ -10,7 +10,11 @@
 	<tr>
 		<td><a href="{$smarty.const.site_addr}/users/edit/{$v.id}">{$v.username}</a></td>
 		<td>{$v.admin}</td>
-		<td>delete</td>
+		{if $v.id eq 1}
+		<td>Delete</td>
+		{else}
+		<td><a href="{$smarty.const.site_addr}/users/delete/{$v.id}/">Delete</a></td>
+		{/if}
 	</tr>
 	{/foreach}
 </table>
