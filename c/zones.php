@@ -36,9 +36,9 @@ class Controller_Zones extends Controller_Base
 			if ($this->Zone->validate(false)) {
 				if ($this->Zone->update($args[0])) {
 					if (!$this->Record->saveEdit($args[0]))
-						echo 'FAILED';
+						$this->template->error = "Could not update/save the records, please try again. <br />\n";
 				} else
-					echo 'FAILED2';
+					$this->template->error = "Could not update/save the zone, please try again. <br />\n";
 					
 			}	
 		}

@@ -9,18 +9,39 @@
 {/if}
 
 <form method="POST" action="{$smarty.const.site_addr}/zones/edit/{$zone.id}">
-<strong>Zone:</strong> {$zone.name} <br />
-<strong>Serial:</strong> {$zone.serial} <br />
+<table id="zone">
+<tr>
+	<td><strong>Zone:</strong></td>
+	<td><input type="text" value="{$zone.name}" READONLY></td>
+	<td><strong>Serial:</strong></td>
+	<td><input type="text" value="{$zone.serial}" READONLY /></td>
+</tr>
 
-<strong>Refresh:</strong> <input type="text" name="refresh" value="{$zone.refresh}" /> 
-<strong>Retry:</strong> <input type="text" name="retry" value="{$zone.retry}" /> <br />
+<tr>
+	<td><strong>Refresh:</strong></td>
+	<td><input type="text" name="refresh" id="refresh" value="{$zone.refresh}" /></td>
+	<td><strong>Retry:</strong></td>
+	<td><input type="text" name="retry" id="retry" value="{$zone.retry}" /></td>
+</tr>
 
-<strong>Expire:</strong> <input type="text" name="expire" value="{$zone.expire}" />
-<strong>TTL:</strong> <input type="text" name="ttl" value="{$zone.ttl}" /> <br />
+<tr>
+	<td><strong>Expire:</strong></td>
+	<td><input type="text" name="expire" id="expire" value="{$zone.expire}" /></td>
+	<td><strong>TTL:</strong></td>
+	<td><input type="text" name="ttl" id="ttl" value="{$zone.ttl}" /></td>
+</tr>
 
-<strong>NS1:</strong> <input type="text" name="pri_dns" value="{$zone.pri_dns}" />
-<strong>NS2:</strong> <input type="text" name="sec_dns" value="{$zone.sec_dns}" /> <br />
-<strong>Owner:</strong> <select name="owner">{html_options options=$users selected=$zone.owner}</select> <br /> <br />
+<tr>
+	<td><strong>NS1:</strong></td>
+	<td><input type="text" name="pri_dns" id="pri_dns" value="{$zone.pri_dns}" /></td>
+	<td><strong>NS2:</strong></td>
+	<td><input type="text" name="sec_dns" id="sec_dns" value="{$zone.sec_dns}" /></td>
+</tr>
+<tr>
+	<td><strong>Owner:</strong></td>
+	<td><select name="owner" style="float: left;">{html_options options=$users selected=$zone.owner}</select></td>
+</tr>
+</table>
 <hr />
 
 <table width="600">

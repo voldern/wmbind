@@ -93,6 +93,7 @@ form input, form select {
 	margin: 5px 0 0 10px;
 }
 
-form input#submit {
-	margin-left: 160px;
-}
+form input#submit {margin-left: 160px;}
+
+table#zone td {text-align: right;}
+table#zone input {margin-right: 5px;}

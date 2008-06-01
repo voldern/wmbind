@@ -3,8 +3,8 @@
  * @package WMBIND 
  */
 
-//error_reporting(E_ALL);
-error_reporting(E_ALL | E_STRICT);
+error_reporting(E_ALL);
+//error_reporting(E_ALL | E_STRICT);
 if (version_compare(phpversion(), '5.1.0', '<') == true)
 	die('PHP 5.1 Only');
 
