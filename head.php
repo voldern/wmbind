@@ -11,7 +11,7 @@
 			<li><a href="<?php echo site_addr; ?>/zones/">Zones</a></li>
 			<li><a href="<?php echo site_addr; ?>/users/">Users</a></li>
 			<li><a href="#">Commit changes</a></li>
-			<li><a href="#">Options</a></li>
+			<li><a href="<?php echo site_addr; ?>/options/">Options</a></li>
 			<li><a href="#">Log out</a></li>
 		</ul>
 	</div>

@@ -55,9 +55,10 @@ abstract class Model_Base
 	{
 		$sth = $this->registry->db->prepare($query);
 		
-		$sth->execute($variables);
+		if ($sth->execute($variables))
+			return true;
 
-		return $sth->fetchAll(PDO::FETCH_ASSOC);
+		return false;
 	}
 
 	function find($query, $variables = array(), $fields = array())
