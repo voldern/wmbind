@@ -24,7 +24,7 @@ class Model_Zone extends Model_Base
 			$this->registry->template->error .= "WWW is not a valid ip address <br />\n";
 
 		if (!empty($_POST['mail']) && !ereg($ipRegex, $_POST['mail']))
-			$this->registry->template->error .= "Mail is a valid ip address <br />\n";
+			$this->registry->template->error .= "Mail is not a valid ip address <br />\n";
 
 		if (empty($this->registry->template->error) == false)
 			return false;
