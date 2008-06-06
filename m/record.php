@@ -52,6 +52,16 @@ class Model_Record extends Model_Base
 
 		return true;
 	}
+
+	// Get all the bad records for the user with the id $userId
+	function bad_records($userId) {
+		// TODO
+		// Give admin full right to see all zones
+		$zones = $this->query("SELECT zones.id, zones.name FROM `zones` JOIN `records` ON records.zone = zones.id 
+			WHERE records.valid != 'yes' AND zones.owner = ?", array($userId), true);
+
+		return $zones;
+	}
 }
 
 ?>

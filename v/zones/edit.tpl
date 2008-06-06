@@ -66,7 +66,7 @@
 	<input type="hidden" name="pri[{$smart.section.i.index}]" value="0" />
 	<td><input type="text" name="destination[{$smarty.section.i.index}]" value="{$records[i].destination}" /></td>
 	{/if}
-	<td>&nbsp;</td>
+	<td>{$records[i].valid}</td>
 	<td><input type="checkbox" name="delete[{$smarty.section.i.index}]" value="true" /></td>
 </tr>
 {/section}

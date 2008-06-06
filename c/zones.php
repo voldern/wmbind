@@ -85,23 +85,149 @@ class Controller_Zones extends Controller_Base
 
 	function commit()
 	{
+		$hostmaster = $this->Option->find('`prefkey` = ?', array('hostmaster'), array('prefval'));
+		$hostmaster = $hostmaster['prefval'];
+		$badZones = array();
+
 		$zones = $this->Zone->findAll("`updated` = 'yes'");
 		if (empty($zones))
 			$this->redirect('/');
 
 		foreach ($zones as $zone) {
 			$records = $this->Record->findAll("`zone` = ? AND `valid` != 'no'", array($zone['id']), NULL, 'host, type, pri, destination');
+			// Add options
 			$out = <<<EOF
 \$TTL	{$zone['ttl']}
-@		IN		SOA		{$zone['pri_dns']}
-EOF;
+@		IN		SOA		{$zone['pri_dns']}. $hostmaster. (
+			{$zone['serial']} \t; Serial
+			{$zone['refresh']} \t\t; Refresh
+			{$zone['retry']} \t\t; Retry
+			{$zone['expire']} \t; Expire
+			{$zone['ttl']}) \t; Negative Cache TTL
+;
 
+EOF;
+			// Add the primary and secondary DNS
+			if (!empty($zone['pri_dns']))
+				$out .= "@		IN		NS		" . $zone['pri_dns'] . ".\n";
+			if (!empty($zone['sec_dns']))
+				$out .= "@		IN		NS		" . $zone['sec_dns'] . ".\n";
+
+			// Write the zone file
 			$fd = fopen($this->registry->zones_path . preg_replace('/\//', '-', $zone['name']), 'w')
 				or die('Cannot open: ' . $this->registry->zones_path . preg_replace('/\//', '-', $zone['name']));
 
 			fwrite($fd, $out);
 			fclose($fd);
+
+			// Check if the zone file is valid
+			$cmd = $this->registry->namedcheckzone . " " . $zone['name'] . " " . 
+				$this->registry->zones_path . preg_replace('/\//', '-', $zone['name']) . ' > /dev/null';
+			system($cmd, $exit);
+			if ($exit == 0) {
+				if (!$this->Zone->save(array('id' => $zone['id'], 'updated' => 'no', 'valid' => 'yes')))
+					die('Could not update zone');
+
+				$rebuild = true;
+			} else {
+				if (!$this->Zone->save(array('id' => $zone['id'], 'updated' => 'yes', 'valid' => 'no'))) 
+					die('Could not update zone');
+
+				$badZones[] = array('id' => $zone['id'], 'name' => $zone['name']);
+			}	
+			
+			// Get records associated with zone
+			$records = $this->Record->findAll("`zone` = ? AND `valid` != 'no'", array($zone['id']), NULL, 'host, type, pri, destination');
+			if (empty($badZones)) {
+				foreach ($records as $record) {
+					// Only add priority if the record is of type 'MX'
+					if ($record['type'] == 'MX')
+						$pri = $record['pri'];
+					else
+						$pri = '';
+
+					// Get the right destination depending on record type
+					if (($record['type'] == 'NS' || $record['type'] == 'PTR' || $record['type'] == 'CNAME' || $record['type'] == 'MX'
+						|| $record['type'] == 'SRV') &&	$record['destination'] != '@') {
+							$destination = $record['destination'] . ".";
+
+					} elseif ($record['type'] == 'TXT')
+						$destination = '"' . $record['destination'] . '"';
+					else
+						$destination = $record['destination'];
+
+					$out = $record['host'] . "\tIN\t" . $record['type'] . "\t" . $pri . "\t" . $destination . "\n";
+					
+					// Write record to end of file
+					$fd = fopen($this->registry->zones_path . preg_replace('/\//', '-', $zone['name']), 'a')
+						or die('Cannot open: ' . $this->registry->zones_path . preg_replace('/\//', '-', $zone['name']));
+					fwrite($fd, $out);
+					fclose($fd);
+
+					// Validate the new record
+					$cmd = $this->registry->namedcheckzone . " " . $zone['name'] . " " . 
+						$this->registry->zones_path . preg_replace('/\//', '-', $zone['name']) . ' > /dev/null';
+					system($cmd, $exit);
+					
+					if ($exit == 0) {
+						if (!$this->Record->save(array('id' => $record['id'], 'valid' => 'yes'))) {
+							die('Could not update zone');
+							$rebuild = true;
+						}
+					} else {
+						// Remove the last record from the zone file that caused the error
+						$fd = fopen($this->registry->zones_path . preg_replace('/\//', '-', $zone['name']), 'r+') 
+							or die('Cannot open: ' . $this->registry->zones_path . preg_replace('/\//', '-', $zone['name']));
+
+						for ($i = 0; fgets($fd); $i++)
+							$addr[$i] = ftell($fd);
+
+						ftruncate($fd, $addr[$i - 2]);
+						fclose($fd);
+
+						if (!$this->Record->save(array('id' => $record['id'], 'valid' => 'no'))) 
+							die('Could not update zone');
+					}	
+				}
+			}
 		}
+
+		// Create a new config file
+		if (isset($rebuild) && $rebuild == true) {
+			if (!$zones = $this->Zone->findAll('1 = 1', NULL, array('name'), 'name'))
+				die('Could not find any zones');
+
+			$cout = '';
+			foreach ($zones as $zone) {
+				$cout .= 'zone "' . $zone['name'] . '" {
+					type master;
+					file "' . preg_replace('/\//', '-', $zone['name']) . "\";
+				};\n\n";
+			}
+
+			$fd = fopen($this->registry->conf_path, 'w')
+				or die('Cannot open: ' . $this->registry->conf_path);
+			fwrite($fd, $cout);
+			fclose($fd);
+
+			// Check if conf file is valid
+			$cmd = $this->registry->namedcheckconf . ' ' . $this->registry->conf_path . ' > /dev/null';
+			system($cmd, $exit);
+			if ($exit != 0)
+				die ($this->registry->namedcheckconf . ' exit status ' . $exit);
+
+			// Reload bind
+			$cmd = $this->registry->rndc . ' reload > /dev/null';
+			system($cmd, $exit);
+			if ($exit != 0)
+				die($this->registry->rndc . ' exit status ' . $exit);
+		}
+
+		// Assing view variables
+		if (!empty($badZones))
+			$this->template->badZones = $badZones;
+
+		$this->template->badRecords = $this->Record->bad_records(1);
 	}
 }
 

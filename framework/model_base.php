@@ -51,14 +51,19 @@ abstract class Model_Base
 		return sha1($this->registry->passwordHash . $pass);
 	}
 
-	function query($query, $variables = array())
+	function query($query, $variables = array(), $return = false)
 	{
+		// TODO
+		// Check if the user is doing a select and return data depending on that instead of using $return
 		$sth = $this->registry->db->prepare($query);
 		
-		if ($sth->execute($variables))
-			return true;
+		if (!$sth->execute($variables))
+			return false;
 
-		return false;
+		if ($return)
+			return $sth->fetchAll(PDO::FETCH_ASSOC);
+
+		return true;
 	}
 
 	function find($query, $variables = array(), $fields = array())
