@@ -2,6 +2,7 @@ Readme file for WMBIND (Web Management for BIND)
 
 Requirements:
 * Apache webserver
-* PHP5 module for Apache
+* PHP 5.2 module for Apache
+* mod_rewrite module for Apache
 * Smarty
 * BIND9
