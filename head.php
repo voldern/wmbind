@@ -8,11 +8,17 @@
 	<h1>SMBIND</h1>
 	<div id="menu">
 		<ul>
+		<?php if(isset($_SESSION['admin'])): ?>
 			<li><a href="<?php echo site_addr; ?>/zones/">Zones</a></li>
-			<li><a href="<?php echo site_addr; ?>/users/">Users</a></li>
 			<li><a href="<?php echo site_addr; ?>/zones/commit">Commit changes</a></li>
+		<?php if($_SESSION['admin']): ?>
+			<li><a href="<?php echo site_addr; ?>/users/">Users</a></li>
 			<li><a href="<?php echo site_addr; ?>/options/">Options</a></li>
-			<li><a href="#">Log out</a></li>
+		<?php endif; ?>
+			<li><a href="<?php echo site_addr; ?>/users/logout">Log out</a></li>
+		<?php else: ?>
+			<li><a href="<?php echo site_addr; ?>/users/login">Login</a></li>
+		<?php endif; ?>
 		</ul>
 	</div>
 	<div id="content">

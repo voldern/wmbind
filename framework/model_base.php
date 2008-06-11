@@ -46,11 +46,6 @@ abstract class Model_Base
 		$this->registry = $registry;
 	}
 
-	function hash($pass)
-	{
-		return sha1($this->registry->passwordHash . $pass);
-	}
-
 	function query($query, $variables = array(), $return = false)
 	{
 		// TODO

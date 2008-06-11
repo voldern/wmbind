@@ -37,10 +37,12 @@
 	<td><strong>NS2:</strong></td>
 	<td><input type="text" name="sec_dns" id="sec_dns" value="{$zone.sec_dns}" /></td>
 </tr>
+{if $smarty.session.admin eq true}
 <tr>
 	<td><strong>Owner:</strong></td>
 	<td><select name="owner" style="float: left;">{html_options options=$users selected=$zone.owner}</select></td>
 </tr>
+{/if}
 </table>
 <hr />
 

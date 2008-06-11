@@ -8,8 +8,8 @@ class Model_Zone extends Model_Base
 	{
 		$this->registry->template->error = NULL;
 
-		if (($save && isset($_POST['name']) && empty($_POST['name'])) || empty($_POST['refresh']) || empty($_POST['retry']) || empty($_POST['expire']) 
-			|| empty($_POST['ttl']) || empty($_POST['pri_dns']) || empty($_POST['sec_dns']) || empty($_POST['owner']))
+		if (($save && empty($_POST['name']) && empty($_POST['name'])) || ($save && empty($_POST['owner'])) || empty($_POST['refresh']) || 
+			empty($_POST['retry']) || empty($_POST['expire']) || empty($_POST['ttl']) || empty($_POST['pri_dns']) || empty($_POST['sec_dns']))
 				$this->registry->template->error .= "Missing some required fields <br />\n";
 
 		if ($save && !$this->unique('`name` LIKE ?', array($_POST['name'])))
@@ -87,6 +87,10 @@ class Model_Zone extends Model_Base
 
 		if ($serial < $oldSerial)
 			$serial = $oldSerial['serial'] + 1;
+
+		// If now owner is supplied just keep the old owner
+		if (empty($_POST['owner']))
+			$_POST['owner'] = $_SESSION['userid'];
 
 		$data = array('id' => $zoneId, 'updated' => 'yes', 'refresh' => $_POST['refresh'], 'retry' => $_POST['retry'], 'expire' => $_POST['expire'], 
 			'ttl' => $_POST['ttl'], 'pri_dns' => $_POST['pri_dns'], 'sec_dns' => $_POST['sec_dns'], 'owner' => $_POST['owner'],

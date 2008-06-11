@@ -1,6 +1,8 @@
 <h2>Zones</h2>
+{if $smarty.session.admin eq true}
 <p><a href="{$smarty.const.site_addr}/zones/register">Create a new zone</a></p>
 <br />
+{/if}
 <table width="400">
 	<tr>
 		<td><strong>Name</strong></td>

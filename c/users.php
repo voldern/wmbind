@@ -1,9 +1,18 @@
 <?php
 
-class Controller_Users extends Controller_Base
+class Controller_Users extends Controller_Application
 {
 
 	public $models = array('User');
+
+	function beforeCall()
+	{
+		if ($this->action != 'login')
+			$this->checkLogin();
+
+		if (($this->action != 'login') && ($this->action != 'logout'))
+			$this->requireAdmin();
+	}
 
 	function index()
 	{
@@ -72,6 +81,27 @@ class Controller_Users extends Controller_Base
 			if (empty($this->template->user))
 				$this->redirect('/users/');
 		}
+	}
+
+	function login()
+	{
+		if ($this->request == "POST") {
+			if (!empty($_POST['username']) && !empty($_POST['password'])) {
+				if ($this->User->login())
+					$this->redirect('/');
+				else
+					$this->registry->template->error = "Wrong username and/or password. <br />\n";
+			} else
+				$this->template->error = "Missing username and/or password. <br />\n";
+		}
+	}
+
+	function logout()
+	{
+		unset($_SESSION['username']);
+		unset($_SESSION['admin']);
+
+		$this->redirect('/users/login');
 	}
 }
 

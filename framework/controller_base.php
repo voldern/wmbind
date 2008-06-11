@@ -39,6 +39,8 @@ abstract class Controller_Base
 
 	public $model = NULL;
 
+	protected $action;
+
 	/**
 	 * $request 
 	 *
@@ -56,11 +58,12 @@ abstract class Controller_Base
 	 * @access protected
 	 * @return void
 	 */
-	function __construct($registry)
+	function __construct($registry, $action)
 	{
 		$this->registry = $registry;
 		$this->template = $this->registry->template;
 		$this->request = $_SERVER['REQUEST_METHOD'];
+		$this->action = $action;
 	}
 
 	/**
@@ -81,15 +84,6 @@ abstract class Controller_Base
 
 		return false;
 	}
-
-	/**
-	 * index 
-	 * 
-	 * @abstract
-	 * @access public
-	 * @return void
-	 */
-	abstract function index();
 
 	/**
 	 * redirect 

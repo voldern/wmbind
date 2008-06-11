@@ -1,7 +1,12 @@
 <?php
 
-class Controller_Index extends Controller_Base
+class Controller_Index extends Controller_Application
 {
+	function beforeCall()
+	{
+		$this->checkLogin();
+	}
+
 	function index()
 	{
 	}

@@ -2,7 +2,7 @@
 {if $badZones}
 	{section name=i loop=$badZones}
 <strong>Error:</strong> The following zone is invalid/bad:
-<a href="{$smarty.const.site_addr}/zones/edit/{$badZones[i].id}"><strong>{$badZones[i].name}</strong></a>
+<a href="{$smarty.const.site_addr}/zones/edit/{$badZones[i].id}"><strong>{$badZones[i].name}</strong></a> <br />
 	{/section}
 {elseif $badRecords}
 	{section name=j loop=$badRecords}

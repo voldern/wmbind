@@ -4,6 +4,11 @@ class Model_User extends Model_Base
 {
 	public $table = 'users';
 
+	function hash($pass)
+	{
+		return sha1($this->registry->passwordHash . $pass);
+	}
+
 	public function validateReg()
 	{
 		$this->registry->template->error = NULL; 
@@ -56,6 +61,25 @@ class Model_User extends Model_Base
 		}
 
 		return $foo;
+	}
+
+	public function login()
+	{
+		$password = $this->hash($_POST['password']);
+		$user = $this->find('`username` = ? AND `password` = ?', array($_POST['username'], $password), array('id', 'admin'));
+
+		if (!empty($user)) {
+			$_SESSION['userid'] = $user['id'];
+
+			if ($user['admin'] == 'yes')
+				$_SESSION['admin'] = true;
+			else
+				$_SESSION['admin'] = false;
+
+			return true;
+		}
+
+		return false;
 	}
 }
 

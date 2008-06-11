@@ -41,11 +41,19 @@ $siteAddr = implode('/', $siteAddr);
  */
 define('site_addr', $siteAddr);
 
-// Autoload missing classes
+/**
+ * Autoload missing classes
+ */
 function __autoload($className)
 {
-	$filename = strtolower($className) . '.php';
-	$file = site_path . 'framework' . DIRSEP . $filename;
+	// TODO
+	// Remove dirty hack :P
+	if ($className == 'Controller_Application') {
+		$file = site_path . 'c' . DIRSEP . 'application.php';
+	} else {
+		$filename = strtolower($className) . '.php';
+		$file = site_path . 'framework' . DIRSEP . $filename;
+	}
 
 	if (file_exists($file) == false) {
 		return false;

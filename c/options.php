@@ -1,9 +1,15 @@
 <?php
 
-class Controller_Options extends Controller_Base
+class Controller_Options extends Controller_Application
 {
 
 	public $models = array('Option');
+
+	function beforeCall()
+	{
+		$this->checkLogin();
+		$this->requireAdmin();
+	}
 
 	function index()
 	{

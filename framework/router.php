@@ -82,7 +82,7 @@ class Router
 		// Initiate the class
 		$class = 'Controller_' . $controller;
 		$testController = $controller;
-		$controller = new $class($this->registry);
+		$controller = new $class($this->registry, $action);
 
 		// Action available?
 		if (is_callable(array($controller, $action)) == false) {
@@ -105,9 +105,12 @@ class Router
 			}
 		}
 
+		// Checks if beforeCall is set
+		if (is_callable(array($controller, 'beforeCall')))
+			$controller->beforeCall();
+
 		// Call the controller
 		$controller->$action($args);
-
 
 		// Checks if the user wants to display a regular or a smarty template
 		// Then autoloads the view if it exists
