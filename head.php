@@ -2,10 +2,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
 <head>
-	<title>SMBIND</title>
+	<title>WMBIND</title>
 	<link rel="stylesheet" media="screen" type="text/css" href="<?php echo site_addr . "/include/html.css"; ?>" />
 	</head><body>
-	<h1>SMBIND</h1>
+	<h1>WMBIND</h1>
 	<div id="menu">
 		<ul>
 		<?php if(isset($_SESSION['admin'])): ?>

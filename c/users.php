@@ -103,6 +103,11 @@ class Controller_Users extends Controller_Application
 
 		$this->redirect('/users/login');
 	}
+
+	function password()
+	{
+
+	}
 }
 
 ?>
