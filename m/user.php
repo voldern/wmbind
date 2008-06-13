@@ -81,6 +81,29 @@ class Model_User extends Model_Base
 
 		return false;
 	}
+
+	public function validatePass()
+	{
+		$error = NULL;
+
+		if (empty($_POST['current']) || empty($_POST['password']) || empty($_POST['password2']))
+			$error .= "Missing some required fields. <br />\n";
+
+		if ($_POST['password'] != $_POST['password2'])
+			$error .= "The two new passwords are not identical. <br />\n";
+
+		// Check if the password is right
+		$user = $this->find('`id` = ? AND `password` = ?', array($_SESSION['userid'], $this->hash($_POST['current'])), array('id')); 
+		if (empty($user))
+			$error .= "The current password is not right. <br />\n";
+
+		$this->registry->template->error = $error;
+
+		if(empty($error))
+			return true;
+
+		return false;
+	}
 }
 
 ?>

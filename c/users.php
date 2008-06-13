@@ -10,7 +10,7 @@ class Controller_Users extends Controller_Application
 		if ($this->action != 'login')
 			$this->checkLogin();
 
-		if (($this->action != 'login') && ($this->action != 'logout'))
+		if (($this->action != 'login') && ($this->action != 'logout') && ($this->action != 'password'))
 			$this->requireAdmin();
 	}
 
@@ -98,7 +98,7 @@ class Controller_Users extends Controller_Application
 
 	function logout()
 	{
-		unset($_SESSION['username']);
+		unset($_SESSION['userid']);
 		unset($_SESSION['admin']);
 
 		$this->redirect('/users/login');
@@ -106,7 +106,12 @@ class Controller_Users extends Controller_Application
 
 	function password()
 	{
-
+		if ($this->request == "POST") {
+			if ($this->User->validatePass()) {
+				$this->User->save(array('id' => $_SESSION['userid'], 'password' => $this->User->hash($_POST['password'])));
+				$this->redirect('/users/logout');
+			}
+		}
 	}
 }
 

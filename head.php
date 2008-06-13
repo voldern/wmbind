@@ -15,6 +15,7 @@
 			<li><a href="<?php echo site_addr; ?>/users/">Users</a></li>
 			<li><a href="<?php echo site_addr; ?>/options/">Options</a></li>
 		<?php endif; ?>
+			<li><a href="<?php echo site_addr; ?>/users/password">Change password</a></li>
 			<li><a href="<?php echo site_addr; ?>/users/logout">Log out</a></li>
 		<?php else: ?>
 			<li><a href="<?php echo site_addr; ?>/users/login">Login</a></li>

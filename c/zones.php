@@ -24,6 +24,11 @@ class Controller_Zones extends Controller_Application
 	{
 		// Get users from the database and format it so that it can be used inside the owner <select></select>
 		$this->template->users = $this->User->options();
+		
+		// Get the default primary and secondary NS
+		$dns = $this->Option->findAll("`prefkey` = 'prins' OR `prefkey` = 'secns'", NULL, array('prefval'));
+		$this->template->prins = $dns[0]['prefval'];
+		$this->template->secns = $dns[1]['prefval'];
 
 		if ($this->request == 'POST')
 		{

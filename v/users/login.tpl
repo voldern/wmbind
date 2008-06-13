@@ -2,7 +2,7 @@
 
 {if $error != NULL}
 <p>
-<strong>The following errors prevented you from logging in:</strong> <br />
+<strong>The following error(s) prevented you from logging in:</strong> <br />
 {$error}
 </p>
 <br />

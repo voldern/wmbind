@@ -14,8 +14,8 @@
 <label for="retry">Retry:</label> <input type="text" name="retry" id="retry" value="7200" /> <br />
 <label for="expire">Expire:</label> <input type="text" name="expire" id="expire" value="1209600" /> <br />
 <label for="ttl">Time to live:</label> <input type="text" name="ttl" id="ttl" value="86400" /> <br />
-<label for="pri_dns">Primary NS:</label> <input type="text" name="pri_dns" id="pri_dns" value="{$smarty.post.pri_dns}" value="" /> <br />
-<label for="sec_dns">Secondary NS:</label> <input type="text" name="sec_dns" id="sec_dns" value="{$smarty.post.sec_dns}" value="" /> <br />
+<label for="pri_dns">Primary NS:</label> <input type="text" name="pri_dns" id="pri_dns" value="{$prins}" value="" /> <br />
+<label for="sec_dns">Secondary NS:</label> <input type="text" name="sec_dns" id="sec_dns" value="{$secns}" value="" /> <br />
 <label for="www">Web Server IP:</label> <input type="text" name="www" id="www" value="{$smarty.post.www}" value="" /> <br />
 <label for="mail">Mail Server IP:</label> <input type="text" name="mail" id="mail" value="{$smarty.post.mail}" value="" /> <br />
 <label>Owner:</label> {html_options name=owner options=$users} <br />
