@@ -9,6 +9,12 @@ if (version_compare(phpversion(), '5.1.0', '<') == true)
 	die('PHP 5.1 Only');
 
 /**
+ * Checks if install script still exists
+ */
+if file_exists('/.install.php')
+	die("If you've run install.php, please delete it.");
+
+/**
  * Start session
  */
 session_start();
