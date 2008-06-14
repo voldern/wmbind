@@ -168,10 +168,10 @@ if (!isset($_GET['rewrite']))
 <h3>MySQL</h3>
 MySQL host: <input type="text" name="mysql[host]" value="localhost" /> <br />
 MySQL username: <input type="text" name="mysql[username]" /> <br />
-MySQL password: <input type="text" name="mysql[password]" /> <br />
+MySQL password: <input type="password" name="mysql[password]" /> <br />
 MySQL database: <input type="text" name="mysql[db]" /> <br />
 <h3>Paths:</h3>
-Smarty path: <input type="text" name="smarty" /> <i>(Full path to Smarty.class.php)</i> <br />
+Smarty path: <input type="text" name="smarty" value="/usr/share/php/smarty/Smarty.class.php" /> <i>(Full path to Smarty.class.php)</i> <br />
 Zones path: <input type="text" name="zones" value="/var/lib/bind/" /> <i>(Path to where to store zone files)</i> <br />
 Conf path: <input type="text" name="conf" value="/etc/wmbind/wmbind.conf" /> <i>(Include this file in named.conf)</i> <br />
 named-checkconf: <input type="text" name="namedcheckconf" value="/usr/sbin/named-checkconf" size="23" /> <i>Full path to executable named-checkconf</i> <br />
