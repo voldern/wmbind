@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
 <head>
 	<title>WMBIND</title>
-	<link rel="stylesheet" media="screen" type="text/css" href="<?php echo site_addr . "/include/html.css"; ?>" />
+	<link rel="stylesheet" media="screen" type="text/css" href="<?php echo site_addr . "/html.css"; ?>" />
 	</head><body>
 	<h1>WMBIND</h1>
 	<div id="menu">
