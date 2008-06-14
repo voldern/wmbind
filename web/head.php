@@ -23,4 +23,4 @@
 		</ul>
 	</div>
 	<div id="content">
-		<img src="http://localhost/smbind/images/logo1.png" width="100" height="100" alt="Image" />
+		<!-- <img src="" width="100" height="100" alt="Image" /> -->
