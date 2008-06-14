@@ -172,7 +172,7 @@ MySQL password: <input type="text" name="mysql[password]" /> <br />
 MySQL database: <input type="text" name="mysql[db]" /> <br />
 <h3>Paths:</h3>
 Smarty path: <input type="text" name="smarty" /> <i>(Full path to Smarty.class.php)</i> <br />
-Zones path: <input type="text" name="zones" value="/var/lib/bind" /> <i>(Path to where to store zone files)</i> <br />
+Zones path: <input type="text" name="zones" value="/var/lib/bind/" /> <i>(Path to where to store zone files)</i> <br />
 Conf path: <input type="text" name="conf" value="/etc/wmbind/wmbind.conf" /> <i>(Include this file in named.conf)</i> <br />
 named-checkconf: <input type="text" name="namedcheckconf" value="/usr/sbin/named-checkconf" size="23" /> <i>Full path to executable named-checkconf</i> <br />
 named-checkzone: <input type="text" name="namedcheckzone" value="/usr/sbin/named-checkzone" size="23" /> <i>Full path to executable named-checkzone</i> <br />
