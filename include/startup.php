@@ -14,11 +14,6 @@ if (version_compare(phpversion(), '5.1.0', '<') == true)
 session_start();
 
 /**
- * Include smarty
- */
-require('smarty/libs/Smarty.class.php');
-
-/**
  * Define the directory separator  
  */
 define ('DIRSEP', DIRECTORY_SEPARATOR);

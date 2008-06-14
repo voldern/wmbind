@@ -6,7 +6,10 @@ class Model_User extends Model_Base
 
 	function hash($pass)
 	{
-		return sha1($this->registry->passwordHash . $pass);
+		if ($this->registry->compability)
+			return md5($pass);
+		else
+			return sha1($this->registry->passwordHash . $pass);
 	}
 
 	public function validateReg()

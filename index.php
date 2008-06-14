@@ -35,6 +35,7 @@ $registry->template->overwrite = true;
 /**
  *  Load smarty object
  */
+require($registry->smarty_path);
 $smarty = new Smarty();
 $smarty->template_dir = site_path . 'v';
 $smarty->compile_dir = site_path . 'v' . DIRSEP . 'smarty' . DIRSEP . 'compile';
