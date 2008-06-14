@@ -11,8 +11,8 @@ if (version_compare(phpversion(), '5.1.0', '<') == true)
 /**
  * Checks if install script still exists
  */
-if (file_exists('/.install.php'))
-	die("If you've run install.php, please delete it.");
+if (file_exists('./install.php'))
+	die("If you are finished with the installation please delete install.php.");
 
 /**
  * Start session
