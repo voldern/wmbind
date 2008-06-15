@@ -11,7 +11,7 @@ class Controller_Index extends Controller_Application
 
 	function index()
 	{
-		$user = $this->User->find($_SESSION['userid']);
+		$user = $this->User->find($_SESSION['userid'], NULL, array('username'));
 		$this->template->user = $user['username'];
 
 		if ($_SESSION['admin'])
