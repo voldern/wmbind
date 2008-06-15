@@ -6,7 +6,7 @@ Readme file for WMBIND (Web Management for BIND)
         who want to administer their BIND9 DNS server(s) from a web interface,
         and delegate zones to users.
 
-* What makes WMBIND better than SMBIND
+* What makes WMBIND better than SMBIND?
         No change has been done to SMBIND since the start of 2007, and because of this
         SMBIND uses a deprecate PHP module. WMBIND does also feature stronger security
         when it comes to storing user passwords (if not running in comp ability mode).
