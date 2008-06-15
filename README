@@ -16,8 +16,7 @@ Readme file for WMBIND (Web Management for BIND)
         the MVC-paradigm, forcing good separation of business logic and the templates.
         This also makes the code easier to navigate and change.
 
-        WMBIND has also features many other small improvements, and will continue to be in
-        development for some time in the future.
+        WMBIND has also features many other small improvements.
 
 * Why use WMBIND versus the 250 other web-based BIND management softwares on SourceForge?
 

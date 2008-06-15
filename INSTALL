@@ -30,7 +30,7 @@ If you already have SMBIND installed and want to use it's databases you can skip
 WEB SERVER
 ############
 3. Copy the contents of the "web" directory to a directory that Apache can access.
-[example] cp -Rp web/* /var/www/wmbind
+[example] cp -Rp web/ /var/www/wmbind
 
 4. Give the web server write permissions to the v/smarty/compile folder and the include/config.php file. Your web server might run as apache, www-data, www, httpd, nobody or something entirely different.
 [example] touch include/config.php
