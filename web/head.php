@@ -7,10 +7,20 @@
 	</head><body>
 	<h1>WMBIND</h1>
 	<div id="menu">
+<?php
+// Check if any zones need to be commited
+// If so change the text of "Commit changes" to red
+$sth = $this->registry->db->prepare("SELECT `id` FROM `zones` WHERE `updated` = 'yes'");
+$sth->execute();
+if ($sth->rowCount() > 0)
+	$text = '<font color="red">Commit changes</font>';
+else
+	$text = 'Commit changes';
+?>
 		<ul>
 		<?php if(isset($_SESSION['admin'])): ?>
 			<li><a href="<?php echo site_addr; ?>/zones/">Zones</a></li>
-			<li><a href="<?php echo site_addr; ?>/zones/commit">Commit changes</a></li>
+			<li><a href="<?php echo site_addr; ?>/zones/commit"><?php echo $text; ?></a></li>
 		<?php if($_SESSION['admin']): ?>
 			<li><a href="<?php echo site_addr; ?>/users/">Users</a></li>
 			<li><a href="<?php echo site_addr; ?>/options/">Options</a></li>
