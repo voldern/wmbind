@@ -53,8 +53,8 @@ class Model_Record extends Model_Base
 		return true;
 	}
 
-	// Get all the bad records for the user with the id $userId
-	function badRecords($userId) {
+	// Get all the bad records for the current user
+	function badRecords() {
 		// Only produce error on zones the user i allowed to view
 		if ($_SESSION['admin'])
 			$zones = $this->query("SELECT zones.id, zones.name FROM `zones` JOIN `records` ON records.zone = zones.id 
