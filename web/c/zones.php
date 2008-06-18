@@ -228,7 +228,7 @@ EOF;
 			foreach ($zones as $zone) {
 				$cout .= 'zone "' . $zone['name'] . '" {
 					type master;
-					file "' . preg_replace('/\//', '-', $zone['name']) . "\";
+					file "' . $this->registry->zones_path . preg_replace('/\//', '-', $zone['name']) . "\";
 				};\n\n";
 			}
 
