@@ -2,5 +2,5 @@
 	* Fixed a bug where the serial would not get updated with a new date
 	* Fixed a bug where the ordering of the default NS1 and NS2 would get reversed
 	* Added support for setting allow-transfer on each zone
-	* wmbind.conf will no use full path to zone files
+	* wmbind.conf will now use full path to zone files
 	* Updated INSTALL with instructions for using WMBIND with apparmour
