@@ -55,13 +55,18 @@ BIND
 9. Add an include to your named.conf, adding wmbind.conf to named.conf
 [example] include "/etc/wmbind/wmbind.conf";
 
+10. If the server is running apparmour with a profile for BIND enabled you need to give BIND read privileges for the WMBIND config file. 
+The config file is by default /etc/wmbind/wmbind.conf, but if you are running in SMBIND support mode this will most likely be /etc/smbind/smbind.conf.
+You should add this line after all the other permission lines: "/etc/wmbind/wmbind.conf r,".
+[example] sed -i 's|}|  /etc/wmbind/wmbind.conf r,\n}|' /etc/apparmor.d/usr.sbin.named
+
 ###########
 INSTALL
 ###########
 
-10. Run the install script located at http://www.domain.tdl/wmbind/install.php
+11. Run the install script located at http://www.domain.tdl/wmbind/install.php
 
-11. After a successful install make sure to delete the install.php script and chmod the include/config.php file
+12. After a successful install make sure to delete the install.php script and chmod the include/config.php file
 [example] rm install.php
 [example] chmod 640 include/config.php
 
@@ -69,4 +74,4 @@ INSTALL
 TESTING OUT
 ###########
 
-12. Login to the web interface with the user 'admin' and password 'admin'. Be sure to change this password right away!
+13. Login to the web interface with the user 'admin' and password 'admin'. Be sure to change this password right away!
