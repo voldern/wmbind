@@ -84,6 +84,29 @@ abstract class Model_Base
 		return $sth->fetch(PDO::FETCH_ASSOC);
 	}
 
+
+	function findValue($query, $variables = array(), $field)
+	{
+		if (!is_string($field))
+			throw new Exception('Field must be of type String');
+	
+		if (is_numeric($query))
+			$query = "SELECT {$field} FROM `{$this->table}` WHERE `id` = '$query'";
+		else
+			$query = "SELECT {$field} FROM `{$this->table}` WHERE $query";
+
+		$sth = $this->registry->db->prepare($query);
+
+		$sth->execute($variables);
+
+		$result = $sth->fetch(PDO::FETCH_ASSOC);
+		
+		if (!$result)
+			return false;
+		else
+			return $result[$field];
+	}
+
 	function findAll($query, $variables = array(), $fields = array(), $sort = '1')
 	{
 		$select = null;
