@@ -63,6 +63,7 @@ INSERT INTO `options` (`prefkey`, `preftype`, `prefval`) VALUES
 ('MAILB', 'record', 'off'),
 ('prins', 'normal', 'ns1.domain.tdl'),
 ('secns', 'normal', 'ns2.domain.tdl'),
+('transfer', 'normal', ''),
 ('hostmaster', 'normal', 'hostmaster.domain.tdl'),
 ('range', 'normal', '10');
 
@@ -123,6 +124,7 @@ CREATE TABLE IF NOT EXISTS `zones` (
   `retry` int(11) NOT NULL default '86400',
   `expire` int(11) NOT NULL default '2419200',
   `ttl` int(11) NOT NULL default '604800',
+  `transfer` varchar(255) collate latin1_general_ci default NULL,
   `valid` enum('unknown','no','yes') collate latin1_general_ci NOT NULL default 'unknown',
   `owner` int(11) NOT NULL default '1',
   `updated` enum('yes','no') collate latin1_general_ci NOT NULL default 'yes',
