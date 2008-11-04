@@ -1,0 +1,77 @@
+Installation of Web Management for BIND
+
+############
+REQUIREMENTS
+############
+
+* Apache web server
+* PHP 5.1
+* mod_rewrite module for Apache
+* Smarty
+* BIND9
+
+############
+GENERIC
+############
+You will need to create a database, table structure, install and configure the PHP scripts, and modify your named.conf. You will need to adjust permissions on your system so that your web server user (www, apache, httpd, nobody, etc.) can read and write various files relating to BIND, such as rndc.
+
+############
+DATABASE
+############
+If you already have SMBIND installed and want to use it's databases you can skip this step.
+
+1. Create WMBIND database.
+[MySQL] mysqladmin -p -u dbuser create wmbind
+
+2. Create the WMBIND tables.
+[MySQL] mysql -p -u dbuser -D wmbind < wmbind-mysql.sql
+
+############
+WEB SERVER
+############
+3. Copy the contents of the "web" directory to a directory that Apache can access.
+[example] cp -Rp web/ /var/www/wmbind
+
+4. Give the web server write permissions to the v/smarty/compile folder and the include/config.php file. Your web server might run as apache, www-data, www, httpd, nobody or something entirely different.
+[example] touch include/config.php
+[example] chown root:www-data v/smarty/compile include/config.php
+[example] chmod 775 v/smarty/compile include/config.php
+
+6. Download the latest version of Smarty from http://smarty.php.net/ see if its located in your package management system.
+[example] aptitude install smarty
+
+###########
+BIND
+###########
+7. Add the user that runs your web server to the group that runs the BIND server. This will allow BIND to access it's files, while it also allowing your web server to update and manage them. The example bellow assumes that apache is running as "www-data" and BIND is running as "bind". Apache must then be restarted.
+[example] usermod -G bind www-data
+[example] /etc/init.d/apache2 restart
+
+8. Create a directory for the wmbind zone/config file.
+[example] mkdir /etc/wmbind
+[example] chown root:bind /etc/wmbind
+[example] chmod 775 /etc/wmbind
+
+9. Add an include to your named.conf, adding wmbind.conf to named.conf
+[example] include "/etc/wmbind/wmbind.conf";
+
+10. If the server is running apparmour with a profile for BIND enabled you need to give BIND read privileges for the WMBIND config file. 
+The config file is by default /etc/wmbind/wmbind.conf, but if you are running in SMBIND support mode this will most likely be /etc/smbind/smbind.conf.
+You should add this line after all the other permission lines: "/etc/wmbind/wmbind.conf r,".
+[example] sed -i 's|}|  /etc/wmbind/wmbind.conf r,\n}|' /etc/apparmor.d/usr.sbin.named
+
+###########
+INSTALL
+###########
+
+11. Run the install script located at http://www.domain.tdl/wmbind/install.php
+
+12. After a successful install make sure to delete the install.php script and chmod the include/config.php file
+[example] rm install.php
+[example] chmod 640 include/config.php
+
+###########
+TESTING OUT
+###########
+
+13. Login to the web interface with the user 'admin' and password 'admin'. Be sure to change this password right away!
