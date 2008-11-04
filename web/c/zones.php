@@ -26,9 +26,12 @@ class Controller_Zones extends Controller_Application
 		$this->template->users = $this->User->options();
 		
 		// Get the default primary and secondary NS
-		$dns = $this->Option->findAll("`prefkey` = 'prins' OR `prefkey` = 'secns'", NULL, array('prefval'));
+		$dns = $this->Option->findAll("`prefkey` = 'prins' OR `prefkey` = 'secns' OR `prefkey` = 'transfer'", 
+			NULL, array('prefval'), '1 DESC');
+
 		$this->template->prins = $dns[0]['prefval'];
 		$this->template->secns = $dns[1]['prefval'];
+		$this->template->transfer = $dns[2]['prefval'];
 
 		if ($this->request == 'POST')
 		{
@@ -47,15 +50,11 @@ class Controller_Zones extends Controller_Application
 		if (empty($args[0]) || !is_numeric($args[0]))
 			$this->redirect('/zones/');
 
-		// Get data to populate the view with
-		$this->template->zone = $this->Zone->find($args[0]);
-		if (empty($this->template->zone))
-			$this->redirect('/zones/');
-
 		// Check if user has permission to edit the zone
 		if (!$_SESSION['admin'] && $this->template->zone['owner'] != $_SESSION['userid'])
 			$this->redirect('/zones/');
 
+		// Save any changes
 		if ($this->request == "POST") {
 			// Validates the zone related input
 			if ($this->Zone->validate(false)) {
@@ -67,6 +66,11 @@ class Controller_Zones extends Controller_Application
 					
 			}	
 		}
+
+		// Get data to populate the view with
+		$this->template->zone = $this->Zone->find($args[0]);
+		if (empty($this->template->zone))
+			$this->redirect('/zones/');
 
 		$this->template->records = $this->Record->findAll("`zone` = ?", array($args[0]), NULL, '`host`, `type`, `pri`, `destination`');
 
@@ -221,14 +225,20 @@ EOF;
 
 		// Create a new config file
 		if (isset($rebuild) && $rebuild == true) {
-			if (!$zones = $this->Zone->findAll('1 = 1', NULL, array('name'), 'name'))
+			if (!$zones = $this->Zone->findAll('1 = 1', NULL, array('name', 'transfer'), 'name'))
 				die('Could not find any zones');
 
 			$cout = '';
 			foreach ($zones as $zone) {
+				if (!empty($zone['transfer']))
+					$transfer = 'allow-transfer { ' . $zone['transfer'] . ' };';
+				else
+					$transfer = '';
+
 				$cout .= 'zone "' . $zone['name'] . '" {
 					type master;
 					file "' . $this->registry->zones_path . preg_replace('/\//', '-', $zone['name']) . "\";
+					$transfer
 				};\n\n";
 			}
 

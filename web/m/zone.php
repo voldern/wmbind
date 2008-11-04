@@ -8,7 +8,7 @@ class Model_Zone extends Model_Base
 	{
 		$this->registry->template->error = NULL;
 
-		if (($save && empty($_POST['name']) && empty($_POST['name'])) || ($save && empty($_POST['owner'])) || empty($_POST['refresh']) || 
+		if (($save && empty($_POST['name'])) || ($save && empty($_POST['owner'])) || empty($_POST['refresh']) || 
 			empty($_POST['retry']) || empty($_POST['expire']) || empty($_POST['ttl']) || empty($_POST['pri_dns']) || empty($_POST['sec_dns']))
 				$this->registry->template->error .= "Missing some required fields <br />\n";
 
@@ -26,6 +26,17 @@ class Model_Zone extends Model_Base
 		if (!empty($_POST['mail']) && !ereg($ipRegex, $_POST['mail']))
 			$this->registry->template->error .= "Mail is not a valid ip address <br />\n";
 
+		// Validate allow-transfer
+		if (!empty($_POST['transfer'])) {
+			$_POST['transfer'] = trim($_POST['transfer']);
+
+			// Check if only valid characters were used
+			$transferRegex = '/^(([1-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3}\; ?)+$/';
+
+			if (preg_match($transferRegex, $_POST['transfer']) == 0)
+				$this->registry->template->error .= "Allow-transfer was not using the right syntax <br />\n";
+		}
+
 		if (empty($this->registry->template->error) == false)
 			return false;
 
@@ -34,9 +45,10 @@ class Model_Zone extends Model_Base
 
 	function saveReg()
 	{
-		if (!$this->save(array('name' => $_POST['name'], 'refresh' => $_POST['refresh'], 'retry' => $_POST['retry'], 
-			'expire' => $_POST['expire'], 'pri_dns' => $_POST['pri_dns'], 'sec_dns' => $_POST['sec_dns'], 'owner' => $_POST['owner'], 
-			'serial' => date("Ymd") . '00'))) {
+		if (!$this->save(array('name' => $_POST['name'], 'refresh' => $_POST['refresh'], 
+			'retry' => $_POST['retry'], 'expire' => $_POST['expire'], 
+			'pri_dns' => $_POST['pri_dns'], 'sec_dns' => $_POST['sec_dns'], 
+			'owner' => $_POST['owner'], 'serial' => date("Ymd") . '00', 'transfer' => $_POST['transfer']))) {
 				return false;
 			} else {
 				$id = $this->find("`name` = ?", array($_POST['name']), array('id'));
@@ -78,23 +90,27 @@ class Model_Zone extends Model_Base
 	function update($zoneId)
 	{
 		// Update serial
-		if (!$oldSerial = $this->find($zoneId, NULL, array('serial'))) {
+		if (!$oldSerial = $this->findValue($zoneId, NULL, 'serial')) {
 			echo 'Old Serial error';
 			return false;
 		}
 			
-		$serial = date("Ymd") . substr($oldSerial['serial'] + 1, -2);
-
-		if ($serial < $oldSerial)
-			$serial = $oldSerial['serial'] + 1;
-
+		// Check if the old serial is from another date
+		// if this is the case create a new serial for this date
+		if (date('Ymd') > substr($oldSerial, 0, 8))
+			$serial = date('Ymd') . '00';
+		else
+			$serial = $oldSerial + 1;
+		
 		// If now owner is supplied just keep the old owner
 		if (empty($_POST['owner']))
 			$_POST['owner'] = $_SESSION['userid'];
 
-		$data = array('id' => $zoneId, 'updated' => 'yes', 'refresh' => $_POST['refresh'], 'retry' => $_POST['retry'], 'expire' => $_POST['expire'], 
-			'ttl' => $_POST['ttl'], 'pri_dns' => $_POST['pri_dns'], 'sec_dns' => $_POST['sec_dns'], 'owner' => $_POST['owner'],
-			'serial' => $serial);
+		$data = array('id' => $zoneId, 'updated' => 'yes', 
+			'refresh' => $_POST['refresh'], 'retry' => $_POST['retry'], 
+			'expire' => $_POST['expire'], 'ttl' => $_POST['ttl'], 'pri_dns' => $_POST['pri_dns'], 
+			'sec_dns' => $_POST['sec_dns'], 'owner' => $_POST['owner'],
+			'serial' => $serial, 'transfer' => $_POST['transfer']);
 		
 		if(!$this->save($data))
 			return false;

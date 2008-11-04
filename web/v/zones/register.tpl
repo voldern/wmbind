@@ -18,6 +18,8 @@
 <label for="sec_dns">Secondary NS:</label> <input type="text" name="sec_dns" id="sec_dns" value="{$secns}" value="" /> <br />
 <label for="www">Web Server IP:</label> <input type="text" name="www" id="www" value="{$smarty.post.www}" value="" /> <br />
 <label for="mail">Mail Server IP:</label> <input type="text" name="mail" id="mail" value="{$smarty.post.mail}" value="" /> <br />
+<label for="transfer">Allow-transfer:</label> <input type="text" name="transfer" id="transfer" value="{$transfer}" />
+<em>(Syntax: 127.0.0.1; 192.168.1.1; )</em> <br />
 <label>Owner:</label> {html_options name=owner options=$users} <br />
 
 <input type="submit" id="submit" value="Add zone" />
