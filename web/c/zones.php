@@ -51,7 +51,8 @@ class Controller_Zones extends Controller_Application
 			$this->redirect('/zones/');
 
 		// Check if user has permission to edit the zone
-		if (!$_SESSION['admin'] && $this->template->zone['owner'] != $_SESSION['userid'])
+		$owner = $this->Zone->findValue($args[0], NULL, 'owner');
+		if (!$_SESSION['admin'] && $owner != $_SESSION['userid'])
 			$this->redirect('/zones/');
 
 		// Save any changes
