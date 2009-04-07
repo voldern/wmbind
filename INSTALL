@@ -67,6 +67,7 @@ INSTALL
 ###########
 
 11. Run the install script located at http://www.domain.tdl/wmbind/install.php
+(If you're going to use postgresql please edit the config.php file manually for now)
 
 12. After a successful install make sure to delete the install.php script and chmod the include/config.php file
 [example] rm install.php
