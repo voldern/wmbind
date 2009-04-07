@@ -15,9 +15,10 @@ class Controller_Index extends Controller_Application
 		$this->template->user = $user['username'];
 
 		if ($_SESSION['admin'])
-			$zones = $this->User->query('SELECT COUNT(*) FROM `zones`', NULL, true);
+			$zones = $this->User->query('SELECT COUNT(*) FROM zones', NULL, true);
 		else
-			$zones = $this->User->query('SELECT COUNT(*) FROM `zones` WHERE `owner` = ?', array($_SESSION['userid']), true);
+			$zones = $this->User->query('SELECT COUNT(*) FROM zones WHERE owner = ?', 
+                                        array($_SESSION['userid']), true);
 
 		$this->template->zones = $zones[0]['COUNT(*)'];
 

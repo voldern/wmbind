@@ -19,7 +19,7 @@ class Model_User extends Model_Base
 		if (empty($_POST['username']) || empty($_POST['password']) || empty($_POST['password2']) || empty($_POST['admin']))
 			$this->registry->template->error .= "Missing username or/and password <br />\n";
 		
-		if ($this->unique('`username` LIKE ?', array($_POST['username'])) == false)
+		if ($this->unique('username LIKE ?', array($_POST['username'])) == false)
 			$this->registry->template->error .= "The username is already in use <br />\n";
 		
 		if ($_POST['password'] != $_POST['password2'])
@@ -69,7 +69,8 @@ class Model_User extends Model_Base
 	public function login()
 	{
 		$password = $this->hash($_POST['password']);
-		$user = $this->find('`username` = ? AND `password` = ?', array($_POST['username'], $password), array('id', 'admin'));
+		$user = $this->find('username = ? AND password = ?', 
+                            array($_POST['username'], $password), array('id', 'admin'));
 
 		if (!empty($user)) {
 			$_SESSION['userid'] = $user['id'];
@@ -96,7 +97,9 @@ class Model_User extends Model_Base
 			$error .= "The two new passwords are not identical. <br />\n";
 
 		// Check if the password is right
-		$user = $this->find('`id` = ? AND `password` = ?', array($_SESSION['userid'], $this->hash($_POST['current'])), array('id')); 
+		$user = $this->find('id = ? AND password = ?', 
+                            array($_SESSION['userid'], $this->hash($_POST['current'])), 
+                            array('id')); 
 		if (empty($user))
 			$error .= "The current password is not right. <br />\n";
 

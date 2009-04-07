@@ -10,8 +10,10 @@ class Controller_Users extends Controller_Application
 		if ($this->action != 'login')
 			$this->checkLogin();
 
-		if (($this->action != 'login') && ($this->action != 'logout') && ($this->action != 'password'))
+		if (($this->action != 'login') && ($this->action != 'logout') && 
+            ($this->action != 'password')) {
 			$this->requireAdmin();
+        }
 	}
 
 	function index()
@@ -25,8 +27,9 @@ class Controller_Users extends Controller_Application
 			// Validating POST data
 			if ($this->User->validateReg()) {	
 				// Trying to save the user to the database
-				if ($this->User->save(array('username' => $_POST['username'], 'password' => $this->User->hash($_POST['password']),
-					'admin' => $_POST['admin']))) {
+				if ($this->User->save(array('username' => $_POST['username'], 
+                                            'password' => $this->User->hash($_POST['password']),
+                                            'admin' => $_POST['admin']))) {
 					$this->redirect('/users/');
 				}
 			} else {
@@ -71,7 +74,7 @@ class Controller_Users extends Controller_Application
 
 		if (isset($args[1]) && $args[1] == 'yes') {
 			if ($this->User->delete($args[0]))
-				$this->User->query('UPDATE `zones` SET `owner` = 1 WHERE `owner` = ?', array($args[0]));
+				$this->User->query('UPDATE zones SET owner = 1 WHERE owner = ?', array($args[0]));
 
 			$this->redirect('/users/');
 		} else {
@@ -108,7 +111,8 @@ class Controller_Users extends Controller_Application
 	{
 		if ($this->request == "POST") {
 			if ($this->User->validatePass()) {
-				$this->User->save(array('id' => $_SESSION['userid'], 'password' => $this->User->hash($_POST['password'])));
+				$this->User->save(array('id' => $_SESSION['userid'], 
+                                        'password' => $this->User->hash($_POST['password'])));
 				$this->redirect('/users/logout');
 			}
 		}

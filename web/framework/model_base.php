@@ -49,7 +49,8 @@ abstract class Model_Base
 	function query($query, $variables = array(), $return = false)
 	{
 		// TODO
-		// Check if the user is doing a select and return data depending on that instead of using $return
+		// Check if the user is doing a select and return data 
+        // depending on that instead of using $return
 		$sth = $this->registry->db->prepare($query);
 		
 		if (!$sth->execute($variables))
@@ -69,14 +70,15 @@ abstract class Model_Base
 				$select .= $field . ", ";
 
 			$select = substr_replace($select, "", -2);
-		} else
-			$select = '*';	
+		} else {
+			$select = '*';
+        }
 		
 		if (is_numeric($query))
-			$query = "SELECT {$select} FROM `{$this->table}` WHERE `id` = '$query'";
+			$query = "SELECT {$select} FROM {$this->table} WHERE id = '$query'";
 		else
-			$query = "SELECT {$select} FROM `{$this->table}` WHERE $query";
-
+			$query = "SELECT {$select} FROM {$this->table} WHERE $query";
+        
 		$sth = $this->registry->db->prepare($query);
 
 		$sth->execute($variables);
@@ -91,9 +93,9 @@ abstract class Model_Base
 			throw new Exception('Field must be of type String');
 	
 		if (is_numeric($query))
-			$query = "SELECT {$field} FROM `{$this->table}` WHERE `id` = '$query'";
+			$query = "SELECT {$field} FROM {$this->table} WHERE id = '$query'";
 		else
-			$query = "SELECT {$field} FROM `{$this->table}` WHERE $query";
+			$query = "SELECT {$field} FROM {$this->table} WHERE $query";
 
 		$sth = $this->registry->db->prepare($query);
 
@@ -116,13 +118,15 @@ abstract class Model_Base
 				$select .= $field . ", ";
 
 			$select = substr_replace($select, "", -2);
-		} else
+		} else {
 			$select = '*';
+        }
 
 		if (is_numeric($query))
-			$query = "SELECT {$select} FROM `{$this->table}` WHERE `id` = '$query' ORDER BY $sort";
+			$query = "SELECT {$select} FROM {$this->table} ".
+                "WHERE id = '$query' ORDER BY $sort";
 		else
-			$query = "SELECT {$select} FROM `{$this->table}` WHERE $query ORDER BY $sort";
+			$query = "SELECT {$select} FROM {$this->table} WHERE $query ORDER BY $sort";
 
 		$sth = $this->registry->db->prepare($query);
 
@@ -137,9 +141,9 @@ abstract class Model_Base
 			$table = $this->table;
 
 		if (is_numeric($query))
-			$query = "DELETE FROM `{$table}` WHERE `id` = '$query'";
+			$query = "DELETE FROM {$table} WHERE id = '$query'";
 		else
-			$query = "DELETE FROM `{$table}` WHERE $query";
+			$query = "DELETE FROM {$table} WHERE $query";
 
 		$sth = $this->registry->db->prepare($query);
 
@@ -151,33 +155,42 @@ abstract class Model_Base
 
 	function save($data, $table = NULL)
 	{
-		$fields = NULL;
+		$fields = $values = '';
+
 		if ($table == NULL)
 			$table = $this->table;
 
 		foreach ($data as $key => $value)
 		{
-			if ($key != 'id')
-				$fields .= "{$key} = :{$key}, ";
+			if ($key != 'id') {
+                // Are we updating a row?
+                if (!empty($data['id']) && is_numeric($data['id'])) {
+                    $fields .= "{$key} = :{$key}, ";
+                } else {
+                    $fields .= "{$key}, ";
+                    $values .= ":{$key}, ";
+                }
+            }
 		}
 
 		$fields = substr_replace($fields, "", -2);
+        if ($values != '')
+            $values = substr_replace($values, "", -2);
 
 		if ($fields == NULL)
 			return false;
 
 		if (!empty($data['id']) && is_numeric($data['id']))
-			$query = "UPDATE `{$table}` SET {$fields} WHERE `id` = :id LIMIT 1"; 
+			$query = "UPDATE {$table} SET {$fields} WHERE id = :id"; 
 		else	
-			$query = "INSERT INTO `{$table}` SET {$fields}";
+			$query = "INSERT INTO {$table} ({$fields}) VALUES ({$values})";
 	
 		$sth = $this->registry->db->prepare($query);
 		
 		if (!$sth->execute($data))
 			return false;
-
+        
 		return true;
-
 	}
 
 	function describe()
@@ -193,9 +206,9 @@ abstract class Model_Base
 	function unique($query, $variables = array())
 	{
 		if (is_int($query))
-			$query = "SELECT count(*) FROM `{$this->table}` WHERE `id` = '$query'";
+			$query = "SELECT count(*) FROM {$this->table} WHERE id = '$query'";
 		else
-			$query = "SELECT count(*) FROM `{$this->table}` WHERE $query";
+			$query = "SELECT count(*) FROM {$this->table} WHERE $query";
 
 		$sth = $this->registry->db->prepare($query);
 

@@ -10,7 +10,7 @@
 <?php
 // Check if any zones need to be commited
 // If so change the text of "Commit changes" to red
-$sth = $this->registry->db->prepare("SELECT `id` FROM `zones` WHERE `updated` = 'yes'");
+$sth = $this->registry->db->prepare("SELECT id FROM zones WHERE updated = 'yes'");
 $sth->execute();
 if ($sth->rowCount() > 0)
 	$text = '<font color="red">Commit changes</font>';

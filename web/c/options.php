@@ -18,16 +18,19 @@ class Controller_Options extends Controller_Application
 		if ($this->request == "POST" && $this->Option->validate()) {
 	
 			// Reset all options
-			$this->Option->query("UPDATE `options` SET `prefval` = 'off' WHERE `preftype` = 'record'");
+			$this->Option->query("UPDATE options SET prefval = 'off' WHERE preftype = 'record'");
 
 			foreach ($_POST as $key => $value) {
-				if(!$this->Option->query("UPDATE `options` SET `prefval` = '{$value}' WHERE `prefkey` = '{$key}'"))
+				if(!$this->Option->query("UPDATE options SET prefval = '{$value}' ".
+                                         "WHERE prefkey = '{$key}'")) {
 					$this->template->error = "Could not update all options <br />\n";
+                }
 			}
 		}
 
 		// Get data to fill in the view
-		$records = $this->Option->findAll("`preftype` = 'record'", NULL, array('prefkey', 'prefval'), '`prefkey`');
+		$records = $this->Option->findAll("preftype = 'record'", NULL,
+                                          array('prefkey', 'prefval'), 'prefkey');
 		for ($x = 0, $y = 0, $i = 0; $i < count($records); $y++, $i++) {
 			if ($y == 5) {
 				$x++;
@@ -36,7 +39,8 @@ class Controller_Options extends Controller_Application
 			$recordsArray[$x][$y] = $records[$i];
 		}
 
-		$options = $this->Option->findAll("`preftype` = 'normal'", NULL, array('prefkey', 'prefval'), '`prefkey`');
+		$options = $this->Option->findAll("preftype = 'normal'", NULL, 
+                                          array('prefkey', 'prefval'), 'prefkey');
 		foreach ($options as $option)
 			$optionsArray[$option['prefkey']] = $option['prefval'];
 

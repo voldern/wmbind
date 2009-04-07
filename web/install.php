@@ -91,7 +91,7 @@ if ($_POST['submit'] == 'Save') {
 			if ($_POST['compability'] != 'true') {
 				echo "Adding user with username 'admin' and password 'admin' to the database...";
 				$password = sha1('@3kDKAS9123:.213if;2,31ujasd1__123admin');
-				$dbh->query("INSERT INTO `users` (`id`, `username`, `password`, `admin`) VALUES (1, 'admin', '$password', 'yes')");
+				$dbh->query("INSERT INTO users (id, username, password, admin) VALUES (1, 'admin', '$password', 'yes')");
 				echo 'Ok <br />';
 			}
 
