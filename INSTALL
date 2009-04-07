@@ -22,9 +22,11 @@ If you already have SMBIND installed and want to use it's databases you can skip
 
 1. Create WMBIND database.
 [MySQL] mysqladmin -p -u dbuser create wmbind
+[PgSQL] Run this query: "CREATE DATABASE wmbind OWNER = 'dbuser'"
 
 2. Create the WMBIND tables.
 [MySQL] mysql -p -u dbuser -D wmbind < wmbind-mysql.sql
+[PgSQL] psql -p -u dbuser -d wmbind < wmbind-pgsql.sql
 
 ############
 WEB SERVER
